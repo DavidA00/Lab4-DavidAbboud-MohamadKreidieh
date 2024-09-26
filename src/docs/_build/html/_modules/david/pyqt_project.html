@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>david.pyqt_project &mdash; School System Project with Pyqt 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            School System Project with Pyqt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">School System Project with Pyqt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">david.pyqt_project</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for david.pyqt_project</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QApplication</span><span class="p">,</span> <span class="n">QMainWindow</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span>
+                             <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">,</span> <span class="n">QTableWidget</span><span class="p">,</span> <span class="n">QAction</span><span class="p">,</span> 
+                             <span class="n">QTabWidget</span><span class="p">,</span> <span class="n">QFormLayout</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QFileDialog</span><span class="p">)</span>
+
+
+<span class="kn">from</span> <span class="nn">david.database</span> <span class="kn">import</span> <span class="n">Database</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<div class="viewcode-block" id="SchoolManagementGUI">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI">[docs]</a>
+<span class="k">class</span> <span class="nc">SchoolManagementGUI</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class represents the main window for the School Management System GUI.</span>
+
+<span class="sd">    It provides the graphical interface for managing students, instructors, courses, </span>
+<span class="sd">    and registrations in a school environment. Users can add, edit, delete, and display records,</span>
+<span class="sd">    as well as export and back up the database.</span>
+
+<span class="sd">    :param db: An instance of the Database class for data storage</span>
+<span class="sd">    :type db: Database</span>
+<span class="sd">    :param student_name: Input field for the student&#39;s name</span>
+<span class="sd">    :type student_name: QLineEdit</span>
+<span class="sd">    :param student_age: Input field for the student&#39;s age</span>
+<span class="sd">    :type student_age: QLineEdit</span>
+<span class="sd">    :param student_email: Input field for the student&#39;s email</span>
+<span class="sd">    :type student_email: QLineEdit</span>
+<span class="sd">    :param student_id: Input field for the student&#39;s ID</span>
+<span class="sd">    :type student_id: QLineEdit</span>
+<span class="sd">    :param instructor_name: Input field for the instructor&#39;s name</span>
+<span class="sd">    :type instructor_name: QLineEdit</span>
+<span class="sd">    :param instructor_age: Input field for the instructor&#39;s age</span>
+<span class="sd">    :type instructor_age: QLineEdit</span>
+<span class="sd">    :param instructor_email: Input field for the instructor&#39;s email</span>
+<span class="sd">    :type instructor_email: QLineEdit</span>
+<span class="sd">    :param instructor_id: Input field for the instructor&#39;s ID</span>
+<span class="sd">    :type instructor_id: QLineEdit</span>
+<span class="sd">    :param course_id: Input field for the course ID</span>
+<span class="sd">    :type course_id: QLineEdit</span>
+<span class="sd">    :param course_name: Input field for the course name</span>
+<span class="sd">    :type course_name: QLineEdit</span>
+<span class="sd">    :param course_instructor: Dropdown for selecting the course instructor</span>
+<span class="sd">    :type course_instructor: QComboBox</span>
+<span class="sd">    :param reg_student: Dropdown for selecting a student during registration</span>
+<span class="sd">    :type reg_student: QComboBox</span>
+<span class="sd">    :param reg_course: Dropdown for selecting a course during registration</span>
+<span class="sd">    :type reg_course: QComboBox</span>
+<span class="sd">    :param records_table: Table displaying all records</span>
+<span class="sd">    :type records_table: QTableWidget</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the SchoolManagementGUI class and sets up the main window for the application.</span>
+
+<span class="sd">        :raises IOError: If the database file is not found</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;School Management System&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setGeometry</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="s1">&#39;school.db&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;gui_2.sql&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">load_database</span><span class="p">(</span><span class="s1">&#39;gui_2.sql&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: gui_2.sql not found. Starting with an empty database.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_ui</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SchoolManagementGUI.init_ui">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.init_ui">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the main UI components, including tabs for students, instructors, courses, and registrations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">central_widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="n">central_widget</span><span class="p">)</span>
+        <span class="n">main_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">central_widget</span><span class="p">)</span>
+
+        <span class="c1"># Create tabs</span>
+        <span class="n">tabs</span> <span class="o">=</span> <span class="n">QTabWidget</span><span class="p">()</span>
+        <span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">tabs</span><span class="p">)</span>
+
+        <span class="c1"># Student tab</span>
+        <span class="n">student_tab</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">student_tab</span><span class="p">,</span> <span class="s2">&quot;Students&quot;</span><span class="p">)</span>
+        <span class="n">student_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">student_tab</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_student_form</span><span class="p">(</span><span class="n">student_layout</span><span class="p">)</span>
+
+        <span class="c1"># Instructor tab</span>
+        <span class="n">instructor_tab</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">instructor_tab</span><span class="p">,</span> <span class="s2">&quot;Instructors&quot;</span><span class="p">)</span>
+        <span class="n">instructor_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">instructor_tab</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_instructor_form</span><span class="p">(</span><span class="n">instructor_layout</span><span class="p">)</span>
+
+        <span class="c1"># Course tab</span>
+        <span class="n">course_tab</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">course_tab</span><span class="p">,</span> <span class="s2">&quot;Courses&quot;</span><span class="p">)</span>
+        <span class="n">course_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">course_tab</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_course_form</span><span class="p">(</span><span class="n">course_layout</span><span class="p">)</span>
+
+        <span class="c1"># Registration tab</span>
+        <span class="n">registration_tab</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">registration_tab</span><span class="p">,</span> <span class="s2">&quot;Registration&quot;</span><span class="p">)</span>
+        <span class="n">registration_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">registration_tab</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_registration_form</span><span class="p">(</span><span class="n">registration_layout</span><span class="p">)</span>
+
+        <span class="c1"># Display tab</span>
+        <span class="n">display_tab</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">display_tab</span><span class="p">,</span> <span class="s2">&quot;Display Records&quot;</span><span class="p">)</span>
+        <span class="n">display_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">display_tab</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_display_tab</span><span class="p">(</span><span class="n">display_layout</span><span class="p">)</span>
+
+        <span class="c1"># Setup menu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh_display</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_all_dropdowns</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.setup_student_form">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.setup_student_form">[docs]</a>
+    <span class="k">def</span> <span class="nf">setup_student_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the form for adding a student.</span>
+
+<span class="sd">        :param layout: The layout to add the form fields and button to</span>
+<span class="sd">        :type layout: QVBoxLayout</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">form_layout</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">student_name</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">student_age</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">student_email</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">student_id</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Name:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">student_name</span><span class="p">)</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Age:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">student_age</span><span class="p">)</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Email:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">student_email</span><span class="p">)</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Student ID:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">student_id</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">form_layout</span><span class="p">)</span>
+
+        <span class="n">add_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Add Student&quot;</span><span class="p">)</span>
+        <span class="n">add_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_student</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">add_button</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.add_student">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.add_student">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_student</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new student to the database using the input fields for name, age, email, and student ID.</span>
+
+<span class="sd">        :raises ValueError: If the age is not an integer or if an input field is left empty.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">create_student</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">student_id</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">student_name</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">student_age</span><span class="o">.</span><span class="n">text</span><span class="p">()),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">student_email</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Success&quot;</span><span class="p">,</span> <span class="s2">&quot;Student added successfully!&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_student_fields</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_display</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_registration_dropdowns</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.setup_instructor_form">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.setup_instructor_form">[docs]</a>
+    <span class="k">def</span> <span class="nf">setup_instructor_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the form for adding an instructor.</span>
+
+<span class="sd">        :param layout: The layout to add the form fields and button to</span>
+<span class="sd">        :type layout: QVBoxLayout</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">form_layout</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructor_name</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructor_age</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructor_email</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructor_id</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Name:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instructor_name</span><span class="p">)</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Age:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instructor_age</span><span class="p">)</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Email:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instructor_email</span><span class="p">)</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Instructor ID:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instructor_id</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">form_layout</span><span class="p">)</span>
+
+        <span class="n">add_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Add Instructor&quot;</span><span class="p">)</span>
+        <span class="n">add_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_instructor</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">add_button</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.add_instructor">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.add_instructor">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_instructor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new instructor to the database using the input fields for name, age, email, and instructor ID.</span>
+
+<span class="sd">        :raises ValueError: If the age is not an integer or if an input field is left empty.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">create_instructor</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">instructor_id</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">instructor_name</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instructor_age</span><span class="o">.</span><span class="n">text</span><span class="p">()),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">instructor_email</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Success&quot;</span><span class="p">,</span> <span class="s2">&quot;Instructor added successfully!&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_instructor_fields</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_display</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_instructor_dropdown</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.setup_course_form">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.setup_course_form">[docs]</a>
+    <span class="k">def</span> <span class="nf">setup_course_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the form for adding a course.</span>
+
+<span class="sd">        :param layout: The layout to add the form fields and button to</span>
+<span class="sd">        :type layout: QVBoxLayout</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">form_layout</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">course_id</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">course_name</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">course_instructor</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Course ID:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">course_id</span><span class="p">)</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Course Name:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">course_name</span><span class="p">)</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Instructor:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">course_instructor</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">form_layout</span><span class="p">)</span>
+
+        <span class="n">add_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Add Course&quot;</span><span class="p">)</span>
+        <span class="n">add_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_course</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">add_button</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.add_course">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.add_course">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_course</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new course to the database using the input fields for course ID, name, and selected instructor.</span>
+
+<span class="sd">        :raises ValueError: If there is an issue with the provided input values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">instructor_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">course_instructor</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="n">instructor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">read_instructor</span><span class="p">(</span><span class="n">instructor_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">create_course</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">course_id</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">course_name</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+                <span class="n">instructor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">instructor</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Success&quot;</span><span class="p">,</span> <span class="s2">&quot;Course added successfully!&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_course_fields</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_display</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_registration_dropdowns</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.setup_registration_form">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.setup_registration_form">[docs]</a>
+    <span class="k">def</span> <span class="nf">setup_registration_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the form for registering a student in a course.</span>
+
+<span class="sd">        :param layout: The layout to add the form fields and button to</span>
+<span class="sd">        :type layout: QVBoxLayout</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">form_layout</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reg_student</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reg_course</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Student:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_student</span><span class="p">)</span>
+        <span class="n">form_layout</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="s2">&quot;Course:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_course</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">form_layout</span><span class="p">)</span>
+
+        <span class="n">reg_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Register Student&quot;</span><span class="p">)</span>
+        <span class="n">reg_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">register_student</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">reg_button</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.register_student">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.register_student">[docs]</a>
+    <span class="k">def</span> <span class="nf">register_student</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Registers a selected student for a selected course in the database.</span>
+
+<span class="sd">        :raises ValueError: If the student or course selection is invalid or missing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">student_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_student</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="n">course_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reg_course</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+            <span class="n">student</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">read_student</span><span class="p">(</span><span class="n">student_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">))</span>
+            <span class="n">course</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">read_course</span><span class="p">(</span><span class="n">course_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">student</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">course</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid student or course selection.&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">register_student</span><span class="p">(</span><span class="n">student</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">course</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Success&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">student_name</span><span class="si">}</span><span class="s2"> registered in </span><span class="si">{</span><span class="n">course_name</span><span class="si">}</span><span class="s2"> successfully!&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_display</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.setup_display_tab">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.setup_display_tab">[docs]</a>
+    <span class="k">def</span> <span class="nf">setup_display_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the display table for showing all records of students, instructors, courses, and registrations.</span>
+
+<span class="sd">        :param layout: The layout to add the display table to</span>
+<span class="sd">        :type layout: QVBoxLayout</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">records_table</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">()</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">records_table</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.setup_menu">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.setup_menu">[docs]</a>
+    <span class="k">def</span> <span class="nf">setup_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets up the main menu with options for database backup and export.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">main_menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="p">()</span>
+
+        <span class="c1"># File menu</span>
+        <span class="n">file_menu</span> <span class="o">=</span> <span class="n">main_menu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="s1">&#39;File&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Export Database Action</span>
+        <span class="n">export_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Export Database&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">export_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">export_database</span><span class="p">)</span>
+        <span class="n">file_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">export_action</span><span class="p">)</span>
+
+        <span class="c1"># Backup Database Action</span>
+        <span class="n">backup_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Backup Database&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">backup_action</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backup_database</span><span class="p">)</span>
+        <span class="n">file_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">backup_action</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.refresh_display">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.refresh_display">[docs]</a>
+    <span class="k">def</span> <span class="nf">refresh_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Refreshes the records displayed in the records table, showing the latest student, instructor, course,</span>
+<span class="sd">        and registration information from the database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">records_table</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_all_records</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">records_table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">records_table</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">records_table</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">row_idx</span><span class="p">,</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">col_idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">record</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">records_table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">row_idx</span><span class="p">,</span> <span class="n">col_idx</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.export_database">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.export_database">[docs]</a>
+    <span class="k">def</span> <span class="nf">export_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exports the current database to a selected file location.</span>
+
+<span class="sd">        :raises IOError: If there is an issue with saving the file to the specified location.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">file_dialog</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Export Database&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;SQL Files (*.sql)&quot;</span><span class="p">)</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="n">file_dialog</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">file_path</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">save_database</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Success&quot;</span><span class="p">,</span> <span class="s2">&quot;Database exported successfully!&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.backup_database">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.backup_database">[docs]</a>
+    <span class="k">def</span> <span class="nf">backup_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a backup of the current database by saving it to a predefined backup file.</span>
+
+<span class="sd">        :raises IOError: If there is an issue during the backup process.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">backup_path</span> <span class="o">=</span> <span class="s1">&#39;backup.sql&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">save_database</span><span class="p">(</span><span class="n">backup_path</span><span class="p">)</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Success&quot;</span><span class="p">,</span> <span class="s2">&quot;Database backed up successfully!&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.update_all_dropdowns">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.update_all_dropdowns">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_all_dropdowns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates all dropdowns (comboboxes) used for student, instructor, and course selection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_student_dropdown</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_instructor_dropdown</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_registration_dropdowns</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.update_student_dropdown">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.update_student_dropdown">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_student_dropdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the dropdown list for student selection by fetching the latest students from the database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reg_student</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">students</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">read_all_students</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">students</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reg_student</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">student</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">student</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.update_instructor_dropdown">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.update_instructor_dropdown">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_instructor_dropdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the dropdown list for instructor selection by fetching the latest instructors from the database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">course_instructor</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">instructors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">read_all_instructors</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">instructor</span> <span class="ow">in</span> <span class="n">instructors</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">course_instructor</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">instructor</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">instructor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.update_registration_dropdowns">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.update_registration_dropdowns">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_registration_dropdowns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the dropdowns used for student and course selection during registration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_student_dropdown</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reg_course</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">courses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">read_all_courses</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">course</span> <span class="ow">in</span> <span class="n">courses</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reg_course</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">course</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">course</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.clear_student_fields">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.clear_student_fields">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear_student_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears the input fields in the student form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">student_name</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">student_age</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">student_email</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">student_id</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.clear_instructor_fields">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.clear_instructor_fields">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear_instructor_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears the input fields in the instructor form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructor_name</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructor_age</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructor_email</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instructor_id</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SchoolManagementGUI.clear_course_fields">
+<a class="viewcode-back" href="../../david.html#david.pyqt_project.SchoolManagementGUI.clear_course_fields">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear_course_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clears the input fields in the course form.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">course_id</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">course_name</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+</div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">gui</span> <span class="o">=</span> <span class="n">SchoolManagementGUI</span><span class="p">()</span>
+    <span class="n">gui</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, David Abboud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
